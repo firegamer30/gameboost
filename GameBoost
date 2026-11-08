@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#140806">
+<title>GameBoost</title>
+<style>
+:root{--bg:#140806;--card:#241009;--line:#3d1c10;--a:#FF4D1C;--b:#FFC21A;--t:#F7EDE6;--m:#b8a091}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--t);font-family:Tajawal,system-ui,sans-serif;font-size:16px;line-height:1.6;padding:16px 16px 92px;max-width:520px;margin:auto}
+h1{font-size:26px;color:var(--b);margin-bottom:2px}
+h2{font-size:19px;margin-bottom:10px}
+p.s{color:var(--m);font-size:14px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+.lab{font-size:13px;color:var(--m);margin:10px 0 6px}
+button{font-family:inherit;cursor:pointer}
+.btn{background:var(--a);color:#140806;font-weight:700;border:0;border-radius:10px;height:48px;width:100%;font-size:16px}
+.btn:active{transform:scale(.98)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1;min-width:64px;height:40px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--t);font-size:14px}
+.seg button.on{background:var(--a);color:#140806;border-color:var(--a);font-weight:700}
+.row{display:flex;justify-content:space-between;font-size:14px;margin-bottom:3px}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:11px}
+.bar i{display:block;height:100%;background:var(--b)}
+.big{font-size:40px;font-weight:700;color:var(--b);line-height:1.1}
+.sec{display:none}.sec.on{display:block}
+nav{position:fixed;bottom:0;left:0;right:0;background:#0d0403;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr)}
+nav button{background:none;border:0;border-top:3px solid transparent;color:var(--m);height:58px;font-size:14px}
+nav button.on{color:var(--b);border-top-color:var(--a)}
+#ar{position:relative;height:340px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;touch-action:manipulation;margin:10px 0}
+#tg{position:absolute;width:48px;height:48px;border-radius:50%;background:var(--a);border:9px solid var(--b);display:none}
+ul{padding-right:20px;color:var(--m);font-size:14px}
+li{margin-bottom:6px}
+.note{font-size:12px;color:var(--m);margin-top:8px}
+:focus-visible{outline:2px solid var(--b);outline-offset:2px}
+</style>
+</head>
+<body>
+<h1>GameBoost</h1>
+<p class="s">أدوات صغيرة باش تلعب Free Fire بسلاسة</p>
+
+<section class="sec on" id="t-sens">
+<div class="card">
+<h2>حاسبة الحساسية</h2>
+<div class="lab">أسلوب اللعب</div>
+<div class="seg" id="st"></div>
+<div class="lab">عدد الأصابع</div>
+<div class="seg" id="fg"></div>
+</div>
+<div class="card" id="sb"></div>
+<button class="btn" id="sv">حفظ هاد الأرقام</button>
+<p class="note" id="sm">هادي أرقام مقترحة كنقطة بداية. دخلها يدوياً فإعدادات اللعبة وعدل عليها حسب راحتك.</p>
+</section>
+
+<section class="sec" id="t-aim">
+<div class="card">
+<h2>تدريب التصويب</h2>
+<div class="row"><span>الوقت: <b id="tl">20</b></span><span>النتيجة: <b id="sc">0</b></span><span>أحسن: <b id="bs">0</b></span></div>
+<div id="ar"><div id="tg" role="button" aria-label="هدف"></div></div>
+<button class="btn" id="go">بدا (20 ثانية)</button>
+<p class="note" id="am"></p>
+</div>
+</section>
+
+<section class="sec" id="t-net">
+<div class="card">
+<h2>قياس البينغ</h2>
+<div class="big" id="pg">-- ms</div>
+<p class="s" id="pq">كليكي على "قيس" باش تبدا</p>
+<button class="btn" id="pb">قيس</button>
+<p class="note">القياس كيتعمل لسيرفر عام، ماشي لسيرفر Free Fire، وكيعطيك فكرة على جودة النت ديالك.</p>
+</div>
+<div class="card">
+<h2>نصائح</h2>
+<ul><li>فعّل Private DNS فإعدادات أندرويد</li><li>قارن بين Wi-Fi و 4G</li><li>سد التطبيقات اللي كتحمل فالخلفية</li><li>قرّب من الراوتر</li></ul>
+</div>
+</section>
+
+<section class="sec" id="t-hz">
+<div class="card">
+<h2>الهرتز ديال الشاشة</h2>
+<div class="big" id="hv">-- Hz</div>
+<p class="s" id="hm">كليكي على "فحص" وحاول ما تلمسش الشاشة</p>
+<button class="btn" id="hb">فحص</button>
+<p class="note">بعض المتصفحات كتحدد الرقم فـ 60Hz، وهادشي ما كيعنيش بالضرورة أن الشاشة ضعيفة.</p>
+</div>
+<div class="card">
+<h2>باش تفعل أعلى هرتز</h2>
+<ul><li>الإعدادات، العرض (Display)</l
