@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#140806">
 <title>GameBoost</title>
 <style>
-:root{--bg:#140806;--card:#241009;--line:#3d1c10;--a:#FF4D1C;--b:#FFC21A;--t:#F7EDE6;--m:#b8a091}
+:root{--bg:#140806;--card:#241009;--line:#3d1c10;--a:#FF4D1C;--b:#FFC21A;--t:#F7EDE6;--m:#b8a091;--ok:#5DCAA5;--warn:#EF9F27}
 *{box-sizing:border-box;margin:0}
 body{background:var(--bg);color:var(--t);font-family:Tajawal,system-ui,sans-serif;font-size:16px;line-height:1.6;padding:16px 16px 92px;max-width:520px;margin:auto}
 h1{font-size:26px;color:var(--b);margin-bottom:2px}
@@ -15,24 +15,39 @@ p.s{color:var(--m);font-size:14px;margin-bottom:14px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
 .lab{font-size:13px;color:var(--m);margin:10px 0 6px}
 button{font-family:inherit;cursor:pointer}
-.btn{background:var(--a);color:#140806;font-weight:700;border:0;border-radius:10px;height:48px;width:100%;font-size:16px}
+.btn{background:var(--a);color:#140806;font-weight:700;border:0;border-radius:10px;height:48px;width:100%;font-size:16px;margin-bottom:8px}
+.btn.o{background:transparent;color:var(--t);border:1px solid var(--line);height:40px;font-size:14px;font-weight:400}
 .btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.6}
 .seg{display:flex;gap:6px;flex-wrap:wrap}
 .seg button{flex:1;min-width:64px;height:40px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--t);font-size:14px}
 .seg button.on{background:var(--a);color:#140806;border-color:var(--a);font-weight:700}
-.row{display:flex;justify-content:space-between;font-size:14px;margin-bottom:3px}
-.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:11px}
+.row{display:flex;justify-content:space-between;align-items:center;font-size:14px;margin-bottom:3px}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:12px}
 .bar i{display:block;height:100%;background:var(--b)}
+.adj{display:flex;align-items:center;gap:8px}
+.adj button{width:34px;height:30px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--b);font-size:18px;line-height:1}
+.adj b{min-width:34px;text-align:center;font-size:16px}
 .big{font-size:40px;font-weight:700;color:var(--b);line-height:1.1}
 .sec{display:none}.sec.on{display:block}
-nav{position:fixed;bottom:0;left:0;right:0;background:#0d0403;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr)}
-nav button{background:none;border:0;border-top:3px solid transparent;color:var(--m);height:58px;font-size:14px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#0d0403;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr)}
+nav button{background:none;border:0;border-top:3px solid transparent;color:var(--m);height:58px;font-size:13px;padding:0}
 nav button.on{color:var(--b);border-top-color:var(--a)}
 #ar{position:relative;height:340px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;touch-action:manipulation;margin:10px 0}
 #tg{position:absolute;width:48px;height:48px;border-radius:50%;background:var(--a);border:9px solid var(--b);display:none}
 ul{padding-right:20px;color:var(--m);font-size:14px}
 li{margin-bottom:6px}
 .note{font-size:12px;color:var(--m);margin-top:8px}
+.inf .row{font-size:13px;margin-bottom:4px}
+.inf .row span{color:var(--m)}
+.ring{display:flex;justify-content:center;margin-bottom:6px}
+#rg{transition:stroke-dashoffset .6s}
+.ck{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.chip{font-size:11px;padding:2px 9px;border-radius:8px;margin-right:8px}
+.chip.good{background:#0b3a2c;color:var(--ok)}
+.chip.ok{background:#3d2a08;color:var(--warn)}
+.chip.na{background:var(--line);color:var(--m)}
+#tp{font-size:13px;color:var(--m);line-height:1.9;margin-top:12px}
 :focus-visible{outline:2px solid var(--b);outline-offset:2px}
 </style>
 </head>
@@ -40,7 +55,25 @@ li{margin-bottom:6px}
 <h1>GameBoost</h1>
 <p class="s">أدوات صغيرة باش تلعب Free Fire بسلاسة</p>
 
-<section class="sec on" id="t-sens">
+<section class="sec on" id="t-chk">
+<div class="card">
+<div class="ring">
+<svg width="180" height="180" viewBox="0 0 180 180" role="img" aria-label="مؤشر الجاهزية">
+<circle cx="90" cy="90" r="76" fill="none" stroke="#3d1c10" stroke-width="12"/>
+<circle id="rg" cx="90" cy="90" r="76" fill="none" stroke="#FF4D1C" stroke-width="12" stroke-linecap="round" stroke-dasharray="477.5" stroke-dashoffset="477.5" transform="rotate(-90 90 90)"/>
+<text id="scn" x="90" y="94" text-anchor="middle" font-size="42" font-weight="500" fill="#F7EDE6">--</text>
+<text id="lbl" x="90" y="120" text-anchor="middle" font-size="13" fill="#b8a091">جاهزية اللعب</text>
+</svg>
+</div>
+<div id="ck"></div>
+<button class="btn" id="cb" style="margin-top:12px">ابدا الفحص</button>
+<p class="note" id="last"></p>
+<div id="tp"></div>
+</div>
+</section>
+
+<section class="sec" id="t-sens">
+<div class="card inf" id="inf"></div>
 <div class="card">
 <h2>حاسبة الحساسية</h2>
 <div class="lab">أسلوب اللعب</div>
@@ -50,7 +83,8 @@ li{margin-bottom:6px}
 </div>
 <div class="card" id="sb"></div>
 <button class="btn" id="sv">حفظ هاد الأرقام</button>
-<p class="note" id="sm">هادي أرقام مقترحة كنقطة بداية. دخلها يدوياً فإعدادات اللعبة وعدل عليها حسب راحتك.</p>
+<button class="btn o" id="rs">رجع للأرقام الأصلية</button>
+<p class="note" id="sm">الحد الأقصى 200. الأرقام تقدير من مواصفات تيليفونك، دخلها يدوياً فإعدادات اللعبة وعدل عليها بـ + و −. التطبيق الحقيقي غادي يقرا الموديل بالضبط والحمل الحالي ويحسب أدق.</p>
 </section>
 
 <section class="sec" id="t-aim">
@@ -92,7 +126,8 @@ li{margin-bottom:6px}
 </section>
 
 <nav>
-<button class="on" data-t="sens">الحساسية</button>
+<button class="on" data-t="chk">الجاهزية</button>
+<button data-t="sens">الحساسية</button>
 <button data-t="aim">التدريب</button>
 <button data-t="net">الشبكة</button>
 <button data-t="hz">الشاشة</button>
@@ -106,22 +141,107 @@ document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.sec').forEach(s=>s.classList.toggle('on',s.id==='t-'+b.dataset.t));
 });
 
-const base=[['General',100],['Red Dot',92],['2x',78],['4x',62],['AWM',40],['Free Look',70]];
+function measureHz(cb){let n=0,t0=0;function f(t){if(!t0)t0=t;n++;if(t-t0<1000)requestAnimationFrame(f);else{
+  const r=n*1000/(t-t0),std=[30,48,60,72,90,120,144];cb(std.reduce((p,c)=>Math.abs(c-r)<Math.abs(p-r)?c:p))}}requestAnimationFrame(f)}
+async function measurePing(n){const t=[];
+  for(let i=0;i<n;i++){const s=performance.now();
+    try{await fetch('https://www.gstatic.com/generate_204?'+Math.random(),{mode:'no-cors',cache:'no-store'});t.push(performance.now()-s)}catch(e){}}
+  return t.length?Math.round(t.reduce((a,c)=>a+c,0)/t.length):null}
+
+const dpr=window.devicePixelRatio||1;
+const dev={model:'',mem:navigator.deviceMemory||0,cores:navigator.hardwareConcurrency||0,
+  w:Math.round(screen.width*dpr),h:Math.round(screen.height*dpr),dpr:dpr,hz:0};
+const m=navigator.userAgent.match(/;\s*([^;)]+?)\s+Build\//);
+if(m&&m[1]!=='K')dev.model=m[1];
+if(navigator.userAgentData&&navigator.userAgentData.getHighEntropyValues){
+  navigator.userAgentData.getHighEntropyValues(['model']).then(r=>{if(r.model){dev.model=r.model;sens()}}).catch(()=>{});
+}
+
+/* فحص الجاهزية */
+function ring(v){$('#rg').style.strokeDashoffset=(477.5*(1-v/100)).toFixed(1);$('#scn').textContent=Math.round(v)}
+function ckRow(n,v,s){const l={good:'مزيان',ok:'عادي',na:'غير معروف'}[s];
+  return `<div class="ck"><span>${n}</span><span><b style="font-weight:500">${v}</b><span class="chip ${s}">${l}</span></span></div>`}
+$('#last').textContent=ls.get('lastScore','')?'آخر فحص: '+ls.get('lastScore')+' / 100':'';
+$('#cb').onclick=async()=>{
+  const btn=$('#cb');btn.disabled=true;btn.textContent='كنفحص...';
+  let score=100,rows='',tips=[];
+  $('#tp').innerHTML='';$('#ck').innerHTML='';ring(0);$('#lbl').textContent='كنفحص...';
+  const show=()=>{$('#ck').innerHTML=rows;ring(Math.max(0,score))};
+
+  const hz=await new Promise(r=>measureHz(r));dev.hz=hz;
+  let s='good';if(hz<75){score-=10;s='ok';tips.push('فعّل 90Hz ولا 120Hz فإعدادات الشاشة (إلا كان تيليفونك كيدعمها)')}
+  rows+=ckRow('الهرتز',hz+' Hz',s);show();
+
+  const p=await measurePing(4);
+  if(p===null){score-=15;rows+=ckRow('البينغ','--','na');tips.push('ما قدرناش نقيسو النت، تأكد من الاتصال')}
+  else{s='good';
+    if(p>=160){score-=30;s='ok';tips.push('النت ثقيل بزاف، جرب Wi-Fi ولا قرّب من الراوتر')}
+    else if(p>=100){score-=18;s='ok';tips.push('النت متوسط، سد التطبيقات اللي كتحمل')}
+    else if(p>=60){score-=8;s='ok'}
+    rows+=ckRow('البينغ',p+' ms',s)}
+  show();
+
+  let bt=null;try{bt=await navigator.getBattery()}catch(e){}
+  if(bt){const lv=Math.round(bt.level*100);s='good';
+    if(!bt.charging&&lv<20){score-=20;s='ok';tips.push('البطارية ضعيفة بزاف، شحن التيليفون قبل اللعب')}
+    else if(!bt.charging&&lv<30){score-=10;s='ok';tips.push('البطارية تحت 30%، الأحسن تشحن')}
+    rows+=ckRow('البطارية',lv+'%'+(bt.charging?' (كيتشحن)':''),s)}
+  else rows+=ckRow('البطارية','--','na');
+  show();
+
+  if(dev.mem){s='good';
+    if(dev.mem<=2){score-=20;s='ok';tips.push('الذاكرة ضعيفة، سد كل التطبيقات الخلفية وخفف الرسوميات')}
+    else if(dev.mem<=3){score-=12;s='ok';tips.push('سد التطبيقات الخلفية قبل ما تبدا')}
+    else if(dev.mem<=4){score-=5;s='ok'}
+    rows+=ckRow('الذاكرة (تقريباً)',dev.mem+' GB',s)}
+  else rows+=ckRow('الذاكرة','--','na');
+  show();
+
+  score=Math.max(0,score);ring(score);
+  $('#lbl').textContent=score>=85?'ممتاز، جاهز':score>=65?'جاهز للعب':score>=45?'مقبول':'ما مزياناش';
+  tips.push('فعّل عدم الإزعاج باش ما تجيش الإشعارات وسط اللعب');
+  $('#tp').innerHTML=tips.join('<br>');
+  ls.set('lastScore',score);$('#last').textContent='آخر فحص: '+score+' / 100';
+  btn.disabled=false;btn.textContent='عاود الفحص';sens();
+};
+
+/* حاسبة الحساسية */
+const base=[['General',190],['Red Dot',175],['2x',148],['4x',118],['AWM',76],['Free Look',133]];
 const styles={'هيدشوت':1,'رشاش':.9,'سنايبر':.75,'متوازن':.85};
-let st=ls.get('st','هيدشوت'),fg=+ls.get('fg',2);
+let st=ls.get('st','هيدشوت'),fg=+ls.get('fg',2),off={};
+try{off=JSON.parse(ls.get('off','{}'))}catch(e){off={}}
 function seg(el,items,cur,cb){
   el.innerHTML=items.map(i=>`<button class="${i==cur?'on':''}" data-v="${i}">${i}</button>`).join('');
   el.querySelectorAll('button').forEach(b=>b.onclick=()=>cb(b.dataset.v));
 }
+function factor(){
+  let f=styles[st]*(1+(fg-2)*.06);
+  f*=dev.hz>=120?.95:dev.hz>=90?.97:1;
+  f*=dev.mem?(dev.mem<=3?.92:dev.mem>=6?1:.97):1;
+  f*=dev.dpr>=3?1.04:dev.dpr<=2?.97:1;
+  return f;
+}
 function sens(){
   seg($('#st'),Object.keys(styles),st,v=>{st=v;sens()});
   seg($('#fg'),[2,3,4],fg,v=>{fg=+v;sens()});
-  const f=styles[st]*(1+(fg-2)*.06);
-  $('#sb').innerHTML=base.map(([n,v])=>{const x=Math.min(100,Math.round(v*f));return `<div class="row"><span>${n}</span><b>${x}</b></div><div class="bar"><i style="width:${x}%"></i></div>`}).join('');
+  $('#inf').innerHTML=`<h2>تيليفونك</h2>
+  <div class="row"><span>الموديل</span><b>${dev.model||'غير معروف'}</b></div>
+  <div class="row"><span>RAM (تقريباً)</span><b>${dev.mem?dev.mem+' GB':'غير معروف'}</b></div>
+  <div class="row"><span>الأنوية</span><b>${dev.cores||'غير معروف'}</b></div>
+  <div class="row"><span>الشاشة</span><b>${dev.w}x${dev.h}</b></div>
+  <div class="row"><span>الهرتز</span><b>${dev.hz?dev.hz+' Hz':'كنقيس...'}</b></div>`;
+  const f=factor();
+  $('#sb').innerHTML=base.map(([n,v])=>{
+    const x=Math.max(1,Math.min(200,Math.round(v*f)+(off[n]||0)));
+    return `<div class="row"><span>${n}</span><span class="adj"><button data-n="${n}" data-d="-5" aria-label="نقص">−</button><b>${x}</b><button data-n="${n}" data-d="5" aria-label="زيد">+</button></span></div><div class="bar"><i style="width:${x/2}%"></i></div>`}).join('');
+  $('#sb').querySelectorAll('.adj button').forEach(b=>b.onclick=()=>{off[b.dataset.n]=(off[b.dataset.n]||0)+(+b.dataset.d);sens()});
 }
-$('#sv').onclick=()=>{ls.set('st',st);ls.set('fg',fg);$('#sm').textContent='تحفظات الأرقام. غادي تلقاها مرة أخرى فنفس التيليفون.'};
+$('#sv').onclick=()=>{ls.set('st',st);ls.set('fg',fg);ls.set('off',JSON.stringify(off));$('#sm').textContent='تحفظات الأرقام فهاد التيليفون.'};
+$('#rs').onclick=()=>{off={};ls.set('off','{}');sens()};
 sens();
+measureHz(h=>{dev.hz=h;sens()});
 
+/* التدريب */
 let run=false,score=0,tl=20,tm;
 $('#bs').textContent=ls.get('best',0);
 function place(){const a=$('#ar'),t=$('#tg');t.style.display='block';t.style.left=Math.random()*(a.clientWidth-48)+'px';t.style.top=Math.random()*(a.clientHeight-48)+'px'}
@@ -132,26 +252,22 @@ $('#go').onclick=()=>{score=0;tl=20;run=true;$('#sc').textContent=0;$('#tl').tex
   clearInterval(tm);tm=setInterval(()=>{tl--;$('#tl').textContent=tl;if(tl<=0)end()},1000)};
 $('#tg').onclick=e=>{e.stopPropagation();if(!run)return;score++;$('#sc').textContent=score;place()};
 
+/* الشبكة */
 $('#pb').onclick=async()=>{
-  const b=$('#pb');b.disabled=true;$('#pq').textContent='كنقيس...';const t=[];
-  for(let i=0;i<6;i++){const s=performance.now();
-    try{await fetch('https://www.gstatic.com/generate_204?'+Math.random(),{mode:'no-cors',cache:'no-store'});t.push(performance.now()-s)}catch(e){}}
-  b.disabled=false;
-  if(!t.length){$('#pg').textContent='-- ms';$('#pq').textContent='ما قدرناش نقيسو. تأكد من النت وعاود.';return}
-  const avg=Math.round(t.reduce((a,c)=>a+c,0)/t.length);
+  const b=$('#pb');b.disabled=true;$('#pq').textContent='كنقيس...';
+  const avg=await measurePing(6);b.disabled=false;
+  if(avg===null){$('#pg').textContent='-- ms';$('#pq').textContent='ما قدرناش نقيسو. تأكد من النت وعاود.';return}
   $('#pg').textContent=avg+' ms';
   $('#pq').textContent=avg<60?'ممتاز':avg<100?'مزيان':avg<160?'متوسط، جرب Wi-Fi أحسن':'ضعيف، النت ثقيل';
 };
 
+/* الهرتز */
 $('#hb').onclick=()=>{
-  $('#hm').textContent='كنقيس...';let n=0,t0=0;
-  function f(t){if(!t0)t0=t;n++;if(t-t0<1000)requestAnimationFrame(f);else{
-    const r=n*1000/(t-t0),std=[30,48,60,72,90,120,144];
-    const h=std.reduce((p,c)=>Math.abs(c-r)<Math.abs(p-r)?c:p);
-    $('#hv').textContent=h+' Hz';
-    $('#hm').textContent=h>=90?'شاشتك كتخدم بهرتز عالي.':'الشاشة كتبان على '+h+'Hz. إلا كان تيليفونك كيدعم أكثر، شوف الخطوات تحت.'}}
-  requestAnimationFrame(f);
+  $('#hm').textContent='كنقيس...';
+  measureHz(h=>{dev.hz=h;$('#hv').textContent=h+' Hz';
+    $('#hm').textContent=h>=90?'شاشتك كتخدم بهرتز عالي.':'الشاشة كتبان على '+h+'Hz. إلا كان تيليفونك كيدعم أكثر، شوف الخطوات تحت.';
+    sens()});
 };
 </script>
 </body>
-</html>
+  </html>
