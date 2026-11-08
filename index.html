@@ -87,4 +87,71 @@ li{margin-bottom:6px}
 </div>
 <div class="card">
 <h2>باش تفعل أعلى هرتز</h2>
-<ul><li>الإعدادات، العرض (Display)</l
+<ul><li>الإعدادات، العرض (Display)</li><li>Smooth display ولا Refresh rate</li><li>اختار High ولا 90Hz / 120Hz</li><li>سد وضع توفير البطارية قبل ما تلعب</li></ul>
+</div>
+</section>
+
+<nav>
+<button class="on" data-t="sens">الحساسية</button>
+<button data-t="aim">التدريب</button>
+<button data-t="net">الشبكة</button>
+<button data-t="hz">الشاشة</button>
+</nav>
+
+<script>
+const $=s=>document.querySelector(s);
+const ls={get(k,d){try{return localStorage.getItem(k)||d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.sec').forEach(s=>s.classList.toggle('on',s.id==='t-'+b.dataset.t));
+});
+
+const base=[['General',100],['Red Dot',92],['2x',78],['4x',62],['AWM',40],['Free Look',70]];
+const styles={'هيدشوت':1,'رشاش':.9,'سنايبر':.75,'متوازن':.85};
+let st=ls.get('st','هيدشوت'),fg=+ls.get('fg',2);
+function seg(el,items,cur,cb){
+  el.innerHTML=items.map(i=>`<button class="${i==cur?'on':''}" data-v="${i}">${i}</button>`).join('');
+  el.querySelectorAll('button').forEach(b=>b.onclick=()=>cb(b.dataset.v));
+}
+function sens(){
+  seg($('#st'),Object.keys(styles),st,v=>{st=v;sens()});
+  seg($('#fg'),[2,3,4],fg,v=>{fg=+v;sens()});
+  const f=styles[st]*(1+(fg-2)*.06);
+  $('#sb').innerHTML=base.map(([n,v])=>{const x=Math.min(100,Math.round(v*f));return `<div class="row"><span>${n}</span><b>${x}</b></div><div class="bar"><i style="width:${x}%"></i></div>`}).join('');
+}
+$('#sv').onclick=()=>{ls.set('st',st);ls.set('fg',fg);$('#sm').textContent='تحفظات الأرقام. غادي تلقاها مرة أخرى فنفس التيليفون.'};
+sens();
+
+let run=false,score=0,tl=20,tm;
+$('#bs').textContent=ls.get('best',0);
+function place(){const a=$('#ar'),t=$('#tg');t.style.display='block';t.style.left=Math.random()*(a.clientWidth-48)+'px';t.style.top=Math.random()*(a.clientHeight-48)+'px'}
+function end(){run=false;clearInterval(tm);$('#tg').style.display='none';
+  if(score>+ls.get('best',0)){ls.set('best',score);$('#bs').textContent=score}
+  $('#am').textContent='سالات الجولة: '+score+' هدف.';$('#go').textContent='عاود'}
+$('#go').onclick=()=>{score=0;tl=20;run=true;$('#sc').textContent=0;$('#tl').textContent=tl;$('#am').textContent='';place();
+  clearInterval(tm);tm=setInterval(()=>{tl--;$('#tl').textContent=tl;if(tl<=0)end()},1000)};
+$('#tg').onclick=e=>{e.stopPropagation();if(!run)return;score++;$('#sc').textContent=score;place()};
+
+$('#pb').onclick=async()=>{
+  const b=$('#pb');b.disabled=true;$('#pq').textContent='كنقيس...';const t=[];
+  for(let i=0;i<6;i++){const s=performance.now();
+    try{await fetch('https://www.gstatic.com/generate_204?'+Math.random(),{mode:'no-cors',cache:'no-store'});t.push(performance.now()-s)}catch(e){}}
+  b.disabled=false;
+  if(!t.length){$('#pg').textContent='-- ms';$('#pq').textContent='ما قدرناش نقيسو. تأكد من النت وعاود.';return}
+  const avg=Math.round(t.reduce((a,c)=>a+c,0)/t.length);
+  $('#pg').textContent=avg+' ms';
+  $('#pq').textContent=avg<60?'ممتاز':avg<100?'مزيان':avg<160?'متوسط، جرب Wi-Fi أحسن':'ضعيف، النت ثقيل';
+};
+
+$('#hb').onclick=()=>{
+  $('#hm').textContent='كنقيس...';let n=0,t0=0;
+  function f(t){if(!t0)t0=t;n++;if(t-t0<1000)requestAnimationFrame(f);else{
+    const r=n*1000/(t-t0),std=[30,48,60,72,90,120,144];
+    const h=std.reduce((p,c)=>Math.abs(c-r)<Math.abs(p-r)?c:p);
+    $('#hv').textContent=h+' Hz';
+    $('#hm').textContent=h>=90?'شاشتك كتخدم بهرتز عالي.':'الشاشة كتبان على '+h+'Hz. إلا كان تيليفونك كيدعم أكثر، شوف الخطوات تحت.'}}
+  requestAnimationFrame(f);
+};
+</script>
+</body>
+</html>
